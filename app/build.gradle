@@ -1,0 +1,91 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'io.fabric'
+apply plugin: 'com.jakewharton.butterknife'
+apply from: '../dependencies.gradle'
+
+android {
+    compileSdkVersion versions.compileSdkVersion
+    defaultConfig {
+        applicationId "com.wt.pinger"
+        minSdkVersion versions.minSdkVersion
+        targetSdkVersion versions.targetSdkVersion
+        versionCode 100
+        versionName "4.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        resConfigs "en", "pl"
+        vectorDrawables.useSupportLibrary = true
+
+        buildConfigField "long", "APP_BUILD_TIMESTAMP", System.currentTimeMillis() + "L"
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("../debug_keystore.jks")
+            keyAlias 'pinger_debug'
+            storePassword 'pinger'
+            keyPassword 'pinger'
+        }
+        release {
+            Properties props = new Properties()
+            props.load(new FileInputStream("_work/sign/sing.properties"))
+
+            storeFile file("../_work/sign/new_pinger_upload_keystore.jks")
+            keyAlias props.get('SIGN_ALIAS', '')
+            storePassword props.get('SING_STORE_PASS', '')
+            keyPassword props.get('SIGN_ALIAS_PASS', '')
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            shrinkResources true
+            minifyEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "Pinger-4-${variant.buildType.name}-${defaultConfig.versionName}-[${defaultConfig.versionCode}].apk"
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$versions.kotlin"
+
+    // support
+    implementation "com.android.support:appcompat-v7:$versions.support"
+    implementation "com.android.support:support-v4:$versions.support"
+    implementation "com.android.support:support-media-compat:$versions.support"
+    implementation "com.android.support:recyclerview-v7:$versions.support"
+    implementation "com.android.support.constraint:constraint-layout:$versions.constraintLayout"
+
+    // firebase
+    implementation "com.google.firebase:firebase-core:$versions.firebase"
+    implementation "com.google.firebase:firebase-perf:$versions.firebase"
+
+    // others
+    implementation "androidx.core:core-ktx:$versions.ktx"
+    implementation "com.afollestad.material-dialogs:core:$versions.materialDialogs"
+    implementation("com.crashlytics.sdk.android:crashlytics:$versions.crashlytics@aar") { transitive = true }
+    implementation("com.crashlytics.sdk.android:answers:$versions.answers@aar") { transitive = true }
+
+    // project libraries
+    implementation project(':libraries:preferences')
+    implementation project(':libraries:logging')
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
+
+apply plugin: 'com.google.gms.google-services'

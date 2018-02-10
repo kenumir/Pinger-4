@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "796963996519",
+    "firebase_url": "https://pinger-98053.firebaseio.com",
+    "project_id": "pinger-98053",
+    "storage_bucket": "pinger-98053.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796963996519:android:b465ba420e36e206",
+        "android_client_info": {
+          "package_name": "com.wt.pinger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "796963996519-gvi209nt40799u5hpgvc8lmge7p7vbli.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wt.pinger",
+            "certificate_hash": "24ff2074c6fe0faa3f304230246eb12c50617334"
+          }
+        },
+        {
+          "client_id": "796963996519-rdo0lbjt7teqvc5q68pmtdvgnlc9j5gv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wt.pinger",
+            "certificate_hash": "ec0c51afc541ac2e6a2bd7787cefe4aa62154201"
+          }
+        },
+        {
+          "client_id": "796963996519-gv2ihujsne5a1m0kmsj9ljjse7l2enh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNAElk1-u6Wcvs2AwXDZYgVwYD4A3yNao"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "796963996519-gv2ihujsne5a1m0kmsj9ljjse7l2enh2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
