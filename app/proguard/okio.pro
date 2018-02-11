@@ -1,0 +1,2 @@
+-dontwarn okio.**
+-dontnote okio.**

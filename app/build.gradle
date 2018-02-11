@@ -48,7 +48,14 @@ android {
             shrinkResources true
             minifyEnabled true
             signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro',
+                    'proguard/okhttp.pro',
+                    'proguard/okio.pro',
+                    'proguard/retrofit.pro',
+                    'proguard/support-v7.pro',
+                    'proguard/google.pro',
+                    'proguard/butterknife.pro'
             android.applicationVariants.all { variant ->
                 variant.outputs.all {
                     outputFileName = "Pinger-4-${variant.buildType.name}-${defaultConfig.versionName}-[${defaultConfig.versionCode}].apk"
@@ -61,6 +68,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$versions.kotlin"
+    implementation "androidx.core:core-ktx:$versions.ktx"
 
     // support
     implementation "com.android.support:appcompat-v7:$versions.support"
@@ -74,7 +82,6 @@ dependencies {
     implementation "com.google.firebase:firebase-perf:$versions.firebase"
 
     // others
-    implementation "androidx.core:core-ktx:$versions.ktx"
     implementation "com.afollestad.material-dialogs:core:$versions.materialDialogs"
     implementation("com.crashlytics.sdk.android:crashlytics:$versions.crashlytics@aar") { transitive = true }
     implementation("com.crashlytics.sdk.android:answers:$versions.answers@aar") { transitive = true }

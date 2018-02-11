@@ -19,3 +19,24 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-optimizationpasses 25
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-dontpreverify
+-verbose
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+-keepattributes Signature,SourceFile,LineNumberTable
+
+-dontnote org.apache.http.**
+-dontnote android.net.http.**
+-dontnote com.afollestad.materialdialogs.internal.**
+-dontnote kotlin.**
+-dontnote com.crashlytics.android.**
+
+# ignore R.*
+-keep class **.R$* {
+	<fields>;
+}
+
+-dontwarn android.support.v7.**

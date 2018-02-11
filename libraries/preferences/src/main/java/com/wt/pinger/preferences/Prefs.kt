@@ -2,6 +2,7 @@ package com.wt.pinger.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.content.edit
 import com.wt.pinger.utils.SingletonHolder
 import java.util.*
 
@@ -21,7 +22,10 @@ class Prefs private constructor(context: Context) {
         var res = prefs.getString(KeyNames.UUID, null)
         if (res == null) {
             res = UUID.randomUUID().toString()
+            prefs.edit {
+                putString(KeyNames.UUID, res)
+            }
         }
-        return res;
+        return res
     }
 }
