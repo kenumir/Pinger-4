@@ -1,2 +1,0 @@
--dontnote com.google.android.gms.**
--dontnote com.google.firebase.**

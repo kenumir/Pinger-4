@@ -1,1 +1,1 @@
-include ':app', ':libraries:preferences', ':libraries:utils', ':libraries:logging'
+include ':app'
