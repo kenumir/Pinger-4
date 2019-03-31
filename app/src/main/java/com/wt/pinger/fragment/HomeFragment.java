@@ -40,10 +40,7 @@ public class HomeFragment extends BaseFragment {
         recycler.setAdapter(mAdapter = new Adapter());
 
         mPingItemViewModel = ViewModelProviders.of(this).get(PingItemViewModel.class);
-        mPingItemViewModel.getAll().observe(this, posts -> {
-            //swipeLayout.setRefreshing(false);
-            mAdapter.swapData(posts);
-        });
+        mPingItemViewModel.getAll().observe(this, posts -> mAdapter.swapData(posts));
         return res;
     }
 

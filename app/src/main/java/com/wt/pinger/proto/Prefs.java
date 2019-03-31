@@ -19,8 +19,6 @@ public class Prefs {
     public static final String PREF_UUID_TIMESTAMP = "uuid_timestamp";
     public static final String PREF_REFERRER = "referrer";
     public static final String PREF_REFERRER_SAVED = "referrer_saved";
-    public static final String PREF_FIRST_INIT_TIME = "first_init_time";
-    public static final String PREF_FIRST_INIT_TIME_SAVED = "first_init_time_saved";
 
     // user settings
     public static final String PREF_START_PING_FROM_LIST = "start_ping_from_list";
@@ -124,6 +122,23 @@ public class Prefs {
 
     public long getUuidTimestamp() {
         return load(PREF_UUID_TIMESTAMP, 0L);
+    }
+
+    public void saveInstallReferrer(@Nullable String s) {
+        save(PREF_REFERRER, s);
+    }
+
+    @Nullable
+    public String loadInstallReferrer() {
+        return load(PREF_REFERRER);
+    }
+
+    public void saveInstallReferrerSaved(boolean b) {
+        save(PREF_REFERRER_SAVED, b);
+    }
+
+    public boolean loadInstallReferrerSaved() {
+        return load(PREF_REFERRER_SAVED, false);
     }
 
 }

@@ -5,6 +5,7 @@ import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.wt.pinger.R;
+import com.wt.pinger.data.UserSync;
 import com.wt.pinger.fragment.HomeFragment;
 import com.wt.pinger.proto.BaseActivity;
 
@@ -42,6 +43,8 @@ public class MainActivity extends BaseActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.mainFrame, new HomeFragment(), "home")
                     .commit();
+
+            UserSync.get().saveUser(this);
         }
     }
 
