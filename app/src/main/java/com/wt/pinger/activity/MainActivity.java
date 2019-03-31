@@ -1,13 +1,13 @@
-package com.wt.pinger;
+package com.wt.pinger.activity;
 
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.wt.pinger.R;
+import com.wt.pinger.proto.BaseActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = item -> {
@@ -34,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        getReplaioAdConfig().configure(findViewById(R.id.replaioAdView));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getReplaioAdConfig().refreshSettings();
+    }
 }
