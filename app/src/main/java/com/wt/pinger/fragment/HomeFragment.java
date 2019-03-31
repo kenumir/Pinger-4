@@ -37,7 +37,9 @@ public class HomeFragment extends BaseFragment {
         recycler = res.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         recycler.setHasFixedSize(true);
-        recycler.setAdapter(mAdapter = new Adapter());
+        recycler.setAdapter(mAdapter = new Adapter(v -> {
+
+        }));
 
         mPingItemViewModel = ViewModelProviders.of(this).get(PingItemViewModel.class);
         mPingItemViewModel.getAll().observe(this, posts -> mAdapter.swapData(posts));
@@ -56,35 +58,56 @@ public class HomeFragment extends BaseFragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private static class Holder extends RecyclerView.ViewHolder {
+    public @interface ItemType {
+        int PLACEHOLDER = 1;
+        int ITEM = 2;
+    }
 
+    private static class Holder extends RecyclerView.ViewHolder {
         public Holder(@NonNull View itemView) {
             super(itemView);
         }
+        public void update(@Nullable PingItem item, View.OnClickListener ocl) {
+            itemView.setOnClickListener(ocl);
+        }
+    }
 
-        public void update(@NonNull PingItem item) {
-
+    private static class PlaceholderHolder extends Holder {
+        public PlaceholderHolder(@NonNull View itemView) {
+            super(itemView);
         }
     }
 
     private static class Adapter extends RecyclerView.Adapter<Holder> {
 
         private ArrayList<PingItem> mItems = new ArrayList<>();
+        private View.OnClickListener mOnPlaceholderClick;
 
-        public Adapter() {
+        public Adapter(View.OnClickListener pc) {
             setHasStableIds(true);
+            mOnPlaceholderClick = pc;
         }
 
         @NonNull
         @Override
         public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new Holder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ping, parent, false));
+            switch(viewType) {
+                default:
+                case ItemType.ITEM: return new Holder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ping, parent, false));
+                case ItemType.PLACEHOLDER: return new PlaceholderHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ping_placeholder, parent, false));
+            }
         }
 
         @Override
         public void onBindViewHolder(@NonNull Holder holder, int position) {
             PingItem item = mItems.get(position);
-            holder.update(item);
+            holder.update(item, item == null ? mOnPlaceholderClick : null);
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            PingItem item = mItems.get(position);
+            return item == null ? ItemType.PLACEHOLDER : ItemType.ITEM;
         }
 
         @Override
@@ -94,13 +117,16 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public long getItemId(int position) {
-            return mItems.get(position)._id;
+            PingItem item = mItems.get(position);
+            return item != null ? item._id : 0L;
         }
 
         public void swapData(@Nullable List<PingItem> newItems) {
             PingItemDiffCallback postDiffCallback = new PingItemDiffCallback(mItems, newItems == null ? new ArrayList<>() : newItems);
             mItems.clear();
-            if (newItems != null) {
+            if (newItems == null || newItems.size() == 0) {
+                mItems.add(null);
+            } else {
                 mItems.addAll(newItems);
             }
             DiffUtil.calculateDiff(postDiffCallback).dispatchUpdatesTo(this);
@@ -128,11 +154,17 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            if (oldPosts.get(oldItemPosition) == null || newPosts.get(newItemPosition) == null) {
+                return false;
+            }
             return oldPosts.get(oldItemPosition)._id == newPosts.get(newItemPosition)._id;
         }
 
         @Override
         public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            if (oldPosts.get(oldItemPosition) == null || newPosts.get(newItemPosition) == null) {
+                return false;
+            }
             return oldPosts.get(oldItemPosition).equals(newPosts.get(newItemPosition));
         }
     }
