@@ -5,6 +5,8 @@ import android.app.Application;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.perf.FirebasePerformance;
 import com.google.firebase.perf.metrics.Trace;
+import com.wt.pinger.data.AppDatabase;
+import com.wt.pinger.data.DataRepository;
 import com.wt.pinger.proto.Prefs;
 import com.wt.replaioad.ReplaioAdConfig;
 
@@ -39,5 +41,10 @@ public class App extends Application {
     @NonNull
     public ReplaioAdConfig getReplaioAdConfig() {
         return mReplaioAdConfig;
+    }
+
+    @NonNull
+    public DataRepository getRepository() {
+        return DataRepository.getInstance(AppDatabase.getInstance(this));
     }
 }

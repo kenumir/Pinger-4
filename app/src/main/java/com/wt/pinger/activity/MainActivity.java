@@ -5,6 +5,7 @@ import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.wt.pinger.R;
+import com.wt.pinger.fragment.HomeFragment;
 import com.wt.pinger.proto.BaseActivity;
 
 public class MainActivity extends BaseActivity {
@@ -36,6 +37,12 @@ public class MainActivity extends BaseActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         getReplaioAdConfig().configure(findViewById(R.id.replaioAdView));
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.mainFrame, new HomeFragment(), "home")
+                    .commit();
+        }
     }
 
     @Override
