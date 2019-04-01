@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 /**
  * info: https://stackoverflow.com/a/47994657/959086
  */
@@ -15,6 +17,7 @@ android {
         versionName "4.0.0"
 
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
 
         buildConfigField "long", "APP_BUILD_TIMESTAMP", System.currentTimeMillis() + "L"
 
@@ -54,6 +57,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
+    implementation 'com.android.support:multidex:1.0.3'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.1.0-alpha05'
 
     implementation 'com.google.android.material:material:1.1.0-alpha05'
 

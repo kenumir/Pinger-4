@@ -1,5 +1,7 @@
 package com.wt.pinger.data;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
@@ -14,11 +16,14 @@ public class PingItem {
     @PrimaryKey(autoGenerate = true)
     public long _id;
 
+    @ColumnInfo(name = "address")
+    public String address;
+
     @Ignore
     @NonNull
     @Override
     public String toString() {
-        return "{_id=" + _id + "}";
+        return "{_id=" + _id + ", address=" + address + "}";
     }
 
     @Ignore
@@ -29,5 +34,25 @@ public class PingItem {
             return _id == o._id;
         }
         return false;
+    }
+
+    @Ignore
+    @NonNull
+    public Bundle toBundle() {
+        Bundle res = new Bundle();
+        res.putLong("_id", _id);
+        res.putString("address", address);
+        return res;
+    }
+
+    @Ignore
+    @NonNull
+    public static PingItem fromBundle(@Nullable Bundle b) {
+        PingItem res = new PingItem();
+        if (b != null) {
+            res._id = b.getLong("_id", 0);
+            res.address = b.getString("address");
+        }
+        return res;
     }
 }

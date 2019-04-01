@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.wt.pinger.R;
 import com.wt.pinger.data.PingItem;
 import com.wt.pinger.data.PingItemViewModel;
+import com.wt.pinger.dialog.AddressDialog;
 import com.wt.pinger.proto.BaseFragment;
 
 import java.util.ArrayList;
@@ -55,6 +57,14 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.add("Add").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                new AddressDialog()
+                        .show(getFragmentManager(), "address_dialog");
+                return false;
+            }
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
