@@ -9,12 +9,11 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "ping")
-public class PingItem {
+@Entity
+public class Ping {
 
-    @ColumnInfo(name = "_id")
     @PrimaryKey(autoGenerate = true)
-    public long _id;
+    public int id;
 
     @ColumnInfo(name = "address")
     public String address;
@@ -23,34 +22,21 @@ public class PingItem {
     @NonNull
     @Override
     public String toString() {
-        return "{_id=" + _id + ", address=" + address + "}";
+        return "{id=" + id + ", address=" + address + "}";
     }
 
-    @Ignore
-    @Override
-    public boolean equals(@Nullable Object obj) {
-        if (obj instanceof PingItem) {
-            PingItem o = (PingItem) obj;
-            return _id == o._id;
-        }
-        return false;
-    }
-
-    @Ignore
-    @NonNull
     public Bundle toBundle() {
         Bundle res = new Bundle();
-        res.putLong("_id", _id);
+        res.putInt("id", id);
         res.putString("address", address);
         return res;
     }
 
     @Ignore
-    @NonNull
-    public static PingItem fromBundle(@Nullable Bundle b) {
-        PingItem res = new PingItem();
+    public static Ping fromBundle(@Nullable Bundle b) {
+        Ping res = new Ping();
         if (b != null) {
-            res._id = b.getLong("_id", 0);
+            res.id = b.getInt("id");
             res.address = b.getString("address");
         }
         return res;

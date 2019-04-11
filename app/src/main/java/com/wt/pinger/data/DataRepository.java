@@ -1,5 +1,6 @@
 package com.wt.pinger.data;
 
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -23,19 +24,23 @@ public class DataRepository {
     }
 
     private final AppDatabase mDatabase;
-    private MediatorLiveData<List<PingItem>> mObservablePingItem;
+    private MediatorLiveData<List<Ping>> mObservablePingItem;
 
     private DataRepository(AppDatabase database) {
         mDatabase = database;
         mObservablePingItem = new MediatorLiveData<>();
 
         mObservablePingItem.addSource(
-                mDatabase.pingItemDao().getAll(),
-                favItemsEntities -> mObservablePingItem.postValue(favItemsEntities)
+                mDatabase.pingDao().getAll(),
+                items -> mObservablePingItem.postValue(items)
         );
     }
 
-    public LiveData<List<PingItem>> getPingItem() {
+    public PingDao getPingDao() {
+        return mDatabase.pingDao();
+    }
+
+    public LiveData<List<Ping>> getPingItem() {
         return mObservablePingItem;
     }
 }

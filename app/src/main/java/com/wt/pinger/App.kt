@@ -18,7 +18,8 @@ class App : MultiDexApplication() {
         private set
 
     val repository: DataRepository
-        get() = DataRepository.getInstance(AppDatabase.getInstance(this))
+        get() = DataRepository.getInstance(AppDatabase.getInstance(applicationContext))
+
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)

@@ -1,5 +1,6 @@
 package com.wt.pinger.proto;
 
+
 import com.wt.pinger.data.DataRepository;
 
 import androidx.fragment.app.Fragment;

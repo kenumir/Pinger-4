@@ -1,16 +1,18 @@
 package com.wt.pinger.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.wt.pinger.R;
-import com.wt.pinger.data.PingItem;
-import com.wt.pinger.data.PingItemViewModel;
+import com.wt.pinger.data.Ping;
+import com.wt.pinger.data.PingViewModel;
 import com.wt.pinger.dialog.AddressDialog;
 import com.wt.pinger.proto.BaseFragment;
 
@@ -27,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class HomeFragment extends BaseFragment {
 
     private RecyclerView recycler;
-    private PingItemViewModel mPingItemViewModel;
+    //private PingViewModel mPingViewModel;
     private Adapter mAdapter;
 
     public HomeFragment() {}
@@ -43,8 +45,12 @@ public class HomeFragment extends BaseFragment {
 
         }));
 
-        mPingItemViewModel = ViewModelProviders.of(this).get(PingItemViewModel.class);
-        mPingItemViewModel.getAll().observe(this, posts -> mAdapter.swapData(posts));
+        PingViewModel mPingViewModel = ViewModelProviders.of(this).get(PingViewModel.class);
+        mPingViewModel.getAll().observe(this, posts -> {
+            Log.i("pinger", "Home: observe " + posts);
+            mAdapter.swapData(posts);
+        });
+
         return res;
     }
 
@@ -74,11 +80,14 @@ public class HomeFragment extends BaseFragment {
     }
 
     private static class Holder extends RecyclerView.ViewHolder {
+        private TextView txtAddress;
         public Holder(@NonNull View itemView) {
             super(itemView);
+            txtAddress = itemView.findViewById(R.id.txtAddress);
         }
-        public void update(@Nullable PingItem item, View.OnClickListener ocl) {
+        public void update(@Nullable Ping item, View.OnClickListener ocl) {
             itemView.setOnClickListener(ocl);
+            txtAddress.setText(item.address);
         }
     }
 
@@ -90,7 +99,7 @@ public class HomeFragment extends BaseFragment {
 
     private static class Adapter extends RecyclerView.Adapter<Holder> {
 
-        private ArrayList<PingItem> mItems = new ArrayList<>();
+        private ArrayList<Ping> mItems = new ArrayList<>();
         private View.OnClickListener mOnPlaceholderClick;
 
         public Adapter(View.OnClickListener pc) {
@@ -110,13 +119,13 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(@NonNull Holder holder, int position) {
-            PingItem item = mItems.get(position);
+            Ping item = mItems.get(position);
             holder.update(item, item == null ? mOnPlaceholderClick : null);
         }
 
         @Override
         public int getItemViewType(int position) {
-            PingItem item = mItems.get(position);
+            Ping item = mItems.get(position);
             return item == null ? ItemType.PLACEHOLDER : ItemType.ITEM;
         }
 
@@ -127,11 +136,11 @@ public class HomeFragment extends BaseFragment {
 
         @Override
         public long getItemId(int position) {
-            PingItem item = mItems.get(position);
-            return item != null ? item._id : 0L;
+            Ping item = mItems.get(position);
+            return item != null ? item.id : 0;
         }
 
-        public void swapData(@Nullable List<PingItem> newItems) {
+        public void swapData(@Nullable List<Ping> newItems) {
             PingItemDiffCallback postDiffCallback = new PingItemDiffCallback(mItems, newItems == null ? new ArrayList<>() : newItems);
             mItems.clear();
             if (newItems == null || newItems.size() == 0) {
@@ -145,9 +154,9 @@ public class HomeFragment extends BaseFragment {
 
     public static class PingItemDiffCallback extends DiffUtil.Callback {
 
-        private final List<PingItem> oldPosts, newPosts;
+        private final List<Ping> oldPosts, newPosts;
 
-        PingItemDiffCallback(List<PingItem> oldPosts, List<PingItem> newPosts) {
+        PingItemDiffCallback(List<Ping> oldPosts, List<Ping> newPosts) {
             this.oldPosts = oldPosts;
             this.newPosts = newPosts;
         }
@@ -167,7 +176,7 @@ public class HomeFragment extends BaseFragment {
             if (oldPosts.get(oldItemPosition) == null || newPosts.get(newItemPosition) == null) {
                 return false;
             }
-            return oldPosts.get(oldItemPosition)._id == newPosts.get(newItemPosition)._id;
+            return oldPosts.get(oldItemPosition).id == newPosts.get(newItemPosition).id;
         }
 
         @Override
